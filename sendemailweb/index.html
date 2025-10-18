@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .image-section {
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .image-frame {
+            border: 3px solid #333;
+            border-radius: 15px;
+            padding: 10px;
+            background: linear-gradient(45deg, #222, #444);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+            display: inline-block;
+        }
+
+        .baraka-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 10px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .input-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #555;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .ok-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .ok-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .ok-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .baraka-image {
+                max-width: 100%;
+            }
+
+            .image-frame {
+                padding: 8px;
+            }
+
+            .input-section {
+                margin: 20px 0;
+                padding: 20px;
+            }
+
+            label {
+                font-size: 16px;
+            }
+
+            input[type="text"] {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .ok-btn {
+                padding: 12px 30px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .input-section {
+                padding: 15px;
+            }
+
+            input[type="text"] {
+                padding: 10px;
+            }
+
+            .ok-btn {
+                padding: 10px 25px;
+            }
+        }
+
+        /* Contact Info Styles */
+        .contact-info {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 1000;
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .info-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .info-icon i {
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .contact-label {
+            font-size: 12px;
+            color: #ccc;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .contact-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .contact-icons.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .facebook-icon {
+            background: #1877f2;
+            box-shadow: 0 4px 15px rgba(24, 119, 242, 0.3);
+        }
+
+        .facebook-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(24, 119, 242, 0.4);
+        }
+
+        .facebook-icon i {
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        .call-icon {
+            background: #34c759;
+            box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3);
+        }
+
+        .call-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(52, 199, 89, 0.4);
+        }
+
+        .contact-icon i {
+            font-size: 18px;
+            color: white;
+        }
+
+        /* Mobile adjustments for contact info */
+        @media (max-width: 768px) {
+            .contact-info {
+                top: 20px;
+                left: 20px;
+            }
+
+            .info-icon {
+                width: 45px;
+                height: 45px;
+            }
+
+            .info-icon i {
+                font-size: 18px;
+            }
+
+            .contact-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .contact-icon i {
+                font-size: 16px;
+            }
+        }
+
+        /* Phone Number Popup */
+        .phone-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #4CAF50;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            display: none;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .phone-popup.show {
+            display: block;
+        }
+
+        .phone-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border: 1px dashed #4CAF50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .phone-number:hover {
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        .copy-instruction {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .popup-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .copy-btn,
+        .close-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background: #45a049;
+        }
+
+        .close-btn {
+            background: #666;
+            color: white;
+        }
+
+        .close-btn:hover {
+            background: #555;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        .popup-overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .phone-popup {
+                padding: 20px;
+                margin: 20px;
+                width: calc(100% - 40px);
+            }
+
+            .phone-number {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="image-section">
+            <div class="image-frame">
+                <img id="barakaImage" src="material/barakaoff.svg" alt="Baraka Logo" class="baraka-image">
+            </div>
+        </div>
+
+        <div class="input-section">
+            <label for="userName">Please insert your name:</label>
+            <input type="text" id="userName" name="userName" placeholder="Enter your name here...">
+            <br>
+            <button class="ok-btn" onclick="proceedToDataCollector()">OK</button>
+        </div>
+    </div>
+
+    <!-- Contact Info Section -->
+    <div class="contact-info">
+        <div class="info-icon" onclick="toggleContactIcons()">
+            <i>i</i>
+        </div>
+        <div class="contact-label">Contact Info</div>
+        <div class="contact-icons" id="contactIcons">
+            <a href="https://www.facebook.com/ElbarakaDevvlopment" target="_blank" class="contact-icon facebook-icon">
+                <i>f</i>
+            </a>
+            <div class="contact-icon call-icon" onclick="showPhoneNumber()">
+                <i>📞</i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phone Number Popup -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closePhonePopup()"></div>
+    <div class="phone-popup" id="phonePopup">
+        <h3>Phone Number</h3>
+        <div class="copy-instruction">Click the number to select it, then copy</div>
+        <div class="phone-number" id="phoneNumber" onclick="selectPhoneNumber()">17663</div>
+        <div class="popup-buttons">
+            <button class="copy-btn" onclick="copyPhoneNumber()">Copy</button>
+            <button class="close-btn" onclick="closePhonePopup()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('userName');
+        const barakaImage = document.getElementById('barakaImage');
+
+        // Change to baraka on when user clicks on the name input
+        nameInput.addEventListener('click', function () {
+            barakaImage.src = 'material/barakaon.svg';
+        });
+
+        // Change back to baraka off when user clicks away from the input
+        nameInput.addEventListener('blur', function () {
+            barakaImage.src = 'material/barakaoff.svg';
+        });
+
+        // Also change back when clicking anywhere else on the page
+        document.addEventListener('click', function (e) {
+            if (e.target !== nameInput) {
+                barakaImage.src = 'material/barakaoff.svg';
+            }
+        });
+
+        // Function to capitalize first letter of each word
+        function capitalizeWords(str) {
+            return str.replace(/\b\w/g, function (char) {
+                return char.toUpperCase();
+            });
+        }
+
+        // Function to proceed to data collector
+        function proceedToDataCollector() {
+            const name = nameInput.value.trim();
+            if (name === '') {
+                alert('Please enter your name first!');
+                nameInput.focus();
+                return;
+            }
+
+            // Capitalize the name before storing
+            const capitalizedName = capitalizeWords(name);
+
+            // Store capitalized name in session storage for later use
+            sessionStorage.setItem('userName', capitalizedName);
+
+            // Redirect to data collector
+            window.location.href = 'html_root/data_collector.html';
+        }
+
+        // Allow Enter key to submit
+        nameInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                proceedToDataCollector();
+            }
+        });
+
+        // Contact Info Toggle Function
+        function toggleContactIcons() {
+            const contactIcons = document.getElementById('contactIcons');
+            contactIcons.classList.toggle('show');
+        }
+
+        // Close contact icons when clicking elsewhere
+        document.addEventListener('click', function (e) {
+            const contactInfo = document.querySelector('.contact-info');
+            const contactIcons = document.getElementById('contactIcons');
+
+            if (!contactInfo.contains(e.target)) {
+                contactIcons.classList.remove('show');
+            }
+        });
+
+        // Phone Number Functions
+        function showPhoneNumber() {
+            document.getElementById('popupOverlay').classList.add('show');
+            document.getElementById('phonePopup').classList.add('show');
+        }
+
+        function closePhonePopup() {
+            document.getElementById('popupOverlay').classList.remove('show');
+            document.getElementById('phonePopup').classList.remove('show');
+        }
+
+        function selectPhoneNumber() {
+            const phoneNumberElement = document.getElementById('phoneNumber');
+            const range = document.createRange();
+            range.selectNodeContents(phoneNumberElement);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        function copyPhoneNumber() {
+            const phoneNumber = document.getElementById('phoneNumber').textContent;
+            navigator.clipboard.writeText(phoneNumber).then(function () {
+                // Change button text temporarily to show success
+                const copyBtn = document.querySelector('.copy-btn');
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                copyBtn.style.background = '#4CAF50';
+
+                setTimeout(function () {
+                    copyBtn.textContent = originalText;
+                    copyBtn.style.background = '#4CAF50';
+                }, 2000);
+            }).catch(function () {
+                // Fallback for older browsers
+                selectPhoneNumber();
+                alert('Phone number selected. Press Ctrl+C (or Cmd+C on Mac) to copy.');
+            });
+        }
+    </script>
+
+</body>
+
+</html>

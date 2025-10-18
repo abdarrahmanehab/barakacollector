@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Collector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('../material/barakabjcollect.jpg') center/cover no-repeat fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .welcome-header {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .welcome-header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .form-container {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+            transform: translateY(-2px);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: Arial, sans-serif;
+        }
+
+        .send-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+            margin-top: 20px;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        .send-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            .welcome-header h1 {
+                font-size: 20px;
+            }
+
+            .welcome-name {
+                font-size: 18px;
+            }
+
+            input[type="text"],
+            input[type="tel"],
+            input[type="number"],
+            textarea {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .send-btn {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 15px;
+            }
+
+            .welcome-header {
+                padding: 15px;
+            }
+
+            .welcome-header h1 {
+                font-size: 18px;
+            }
+
+            .welcome-name {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="welcome-header">
+            <h1>Welcome</h1>
+            <div class="welcome-name" id="welcomeName">Mr/Ms: Guest</div>
+        </div>
+
+        <div class="form-container">
+            <form action="../send_to_sheets.php" method="post">
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+                </div>
+
+                <div class="form-group">
+                    <label for="question">Question or Note:</label>
+                    <textarea id="question" name="question"
+                        placeholder="Please write your question or any additional notes here..." required></textarea>
+                </div>
+
+                <button type="submit" class="send-btn">Send Info and Take a Look</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Get the name from session storage (set in welcome page)
+        const userName = sessionStorage.getItem('userName') || 'Guest';
+
+        // Update welcome message and form
+        document.getElementById('welcomeName').textContent = `Mr/Ms: ${userName}`;
+        document.getElementById('name').value = userName;
+
+        // If no name was provided, redirect back to welcome page
+        if (userName === 'Guest' || !userName) {
+            alert('Please enter your name first on the welcome page.');
+            window.location.href = '../welcomepage.html';
+        }
+
+        // Phone number validation
+        function validatePhoneNumber(phone) {
+            // Remove any spaces or special characters for validation
+            const cleanPhone = phone.replace(/\s+/g, '').replace(/[^\d]/g, '');
+            
+            // Check if phone starts with 0
+            if (!cleanPhone.startsWith('0')) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Form submission validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+            
+            const phoneInput = document.getElementById('phone');
+            const phoneValue = phoneInput.value.trim();
+            
+            if (phoneValue === '') {
+                alert('Please enter your phone number!');
+                phoneInput.focus();
+                return;
+            }
+            
+            if (!validatePhoneNumber(phoneValue)) {
+                alert("That's not a phone number!");
+                phoneInput.focus();
+                phoneInput.select();
+                return;
+            }
+
+            // If validation passes, submit directly to Google Apps Script
+            const formData = new FormData(this);
+            
+            // Add current date
+            formData.append('date', new Date().toLocaleString());
+            
+            fetch('https://script.google.com/macros/s/AKfycbySkvGSehlPmIVYKBtAzjQhQMkdaWbnno9EWczntRiku3TQo4xXuwzHShqg9sR7JnbWjA/exec', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Redirect to takealook page after successful submission
+                window.location.href = 'takealook.html';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting your information. Please try again.');
+            });
+        });
+
+        // Real-time phone validation feedback
+        document.getElementById('phone').addEventListener('input', function() {
+            const phoneValue = this.value.trim();
+            if (phoneValue.length > 0 && !validatePhoneNumber(phoneValue)) {
+                this.style.borderColor = '#ff4444';
+                this.style.boxShadow = '0 0 10px rgba(255, 68, 68, 0.3)';
+            } else {
+                this.style.borderColor = '#4CAF50';
+                this.style.boxShadow = '0 0 10px rgba(76, 175, 80, 0.3)';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
